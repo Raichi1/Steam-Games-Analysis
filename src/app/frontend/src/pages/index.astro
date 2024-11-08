@@ -1,0 +1,12 @@
+---
+import { AppGames } from "../components/AppGames";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Steam Analysis">
+  <div class="grid place-content-center items-center w-full">
+    <AppGames client:load />
+  </div>
+</Layout>
+
+<style></style>
