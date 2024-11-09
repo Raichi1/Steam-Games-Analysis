@@ -52,9 +52,30 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, gameid }) => {
               <p className='text-gray-500 text-body-16 mt-2'>
                 {gameInfo?.short_description}
               </p>
+
+              {/* Price */}
+              <div className='flex items-center justify-start gap-3 mt-2'>
+                <span className='text-gray-500 text-body-14'>Price:</span>
+                <span className='text-primary text-body-14'>
+                  {gameInfo?.package_groups?.[0]?.subs?.[0]
+                    ?.price_in_cents_with_discount
+                    ? new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD'
+                      }).format(
+                        gameInfo.package_groups[0].subs[0]
+                          .price_in_cents_with_discount / 100
+                      )
+                    : 'Free to Play'}
+                </span>
+              </div>
               <div className='flex gap-3 mt-2'>
                 {gameInfo?.genres?.map(genre => (
-                  <span key={genre.id} className='text-primary text-body-14'>
+                  <span
+                    key={genre.id}
+                    className='text-dark text-body-14 bg-primary px-2 hover:bg-secondary hover:text-primary select-none rounded-md
+                    transition-colors duration-300 ease-in-out'
+                  >
                     {genre.description}
                   </span>
                 ))}

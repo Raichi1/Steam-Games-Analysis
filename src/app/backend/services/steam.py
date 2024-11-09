@@ -1,4 +1,5 @@
 from services.cache_games import CacheGames
+from services.model import Model
 import requests
 
 
@@ -13,6 +14,9 @@ class SteamAPI:
         self.URL_GAME_BY_GENRE = "https://steamspy.com/api.php?request=genre&genre="
         self.URL_GAMES_TOP = "https://steamspy.com/api.php?request=top100in2weeks"
         # ? self.URL_GAMES_INFO = "https://steamspy.com/api.php?request=appdetails&appid=730"
+
+        # Load Model
+        self.model = Model()
 
     def get_all_games(self):
         # Fetch
@@ -30,7 +34,9 @@ class SteamAPI:
             return game
         # Fetch
         print("Fetching for :", game_id)
-        response = requests.get(self.URL_GAME_DETAILS + str(game_id) + "&l=english")
+        response = requests.get(
+            self.URL_GAME_DETAILS + str(game_id) + "&l=english" + "&cc=US"
+        )
         if response.status_code != 200:
             return {}
         # Parse
@@ -58,5 +64,13 @@ class SteamAPI:
         games = response.json()
         # Map the first n games
         games = [game for game in games.values()][:n]
+        # Return
+        return games
+
+    def get_games_predict(self, data):
+        # Fetch
+        response = self.model.predict(data)
+        # Parse
+        games = response.json()
         # Return
         return games

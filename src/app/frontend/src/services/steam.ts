@@ -24,3 +24,13 @@ export const getGameByGenre = async (
     .then(res => res.json())
     .catch(err => console.error(err))
 }
+
+export const getPredictions = async (game: GameInfo): Promise<Response> => {
+  return await fetch(`${URL_API}/game/predict`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(game)
+  })
+}

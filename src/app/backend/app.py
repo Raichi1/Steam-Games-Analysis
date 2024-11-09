@@ -35,8 +35,6 @@ def get_game_by_id(game_id):
 
 
 # Add a new route to get by genre
-
-
 @api.route("/game/genre", methods=["GET"])
 def get_games_by_genre():
     genre = request.args.get("genre")
@@ -44,6 +42,12 @@ def get_games_by_genre():
     # from "early access" to "early+access"
     genre = genre.replace(" ", "+")  # type: ignore
     return jsonify(steam_api.get_games_by_genre(genre, int(n)))
+
+# Add a new Route for make the Predictions
+@api.route("/game/predict", methods=["POST"])
+def get_games_predict():
+    data = request.json
+    return jsonify(steam_api.get_games_predict(data))
 
 
 # Register the Blueprint

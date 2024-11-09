@@ -7,6 +7,7 @@ class CacheGames:
     def __init__(self):
         print("CacheGames initialized")
         self.cache = self._read_cache()
+        self.thread_started = False
         self._init_thread()
 
     def add_game(self, game_id, movie):
@@ -35,8 +36,10 @@ class CacheGames:
             self._save_cache()
 
     def _init_thread(self):
-        # Iniciar el hilo para guardar el caché periódicamente cada 5 minutos (300 segundos)
-        cache_saving_thread = threading.Thread(target=self.save_cache_periodically)
-        cache_saving_thread.daemon = True
-        cache_saving_thread.start()
-        print("CacheGames job started")
+        if not self.thread_started:
+            # Iniciar el hilo para guardar el caché periódicamente cada 5 minutos (300 segundos)
+            cache_saving_thread = threading.Thread(target=self.save_cache_periodically)
+            cache_saving_thread.daemon = True
+            cache_saving_thread.start()
+            self.thread_started = True
+            print("CacheGames job started")
