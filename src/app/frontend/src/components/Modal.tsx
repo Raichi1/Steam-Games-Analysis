@@ -3,6 +3,7 @@ import { type GameInfo } from '../types/steamGameInfo'
 import { getGameInfo } from '../services/steam'
 import { Loading } from './Loading'
 import { SimilarGames } from './SimilarGames'
+import { Prediction } from './Prediction'
 
 interface ModalProps {
   isOpen: boolean
@@ -23,7 +24,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, gameid }) => {
         setIsLoading(false)
       })
     }
-  }, [isOpen, gameid])
+  }, [isOpen])
 
   if (!isOpen) return null
 
@@ -80,6 +81,8 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, gameid }) => {
                   </span>
                 ))}
               </div>
+              {/* Prediction */}
+              <Prediction gameinfo={gameInfo} />
             </section>
             <SimilarGames gameInfo={gameInfo!} />
           </main>

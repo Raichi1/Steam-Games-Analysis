@@ -23,7 +23,7 @@ export const SimilarGames: React.FC<ModalProps> = ({ gameInfo }) => {
       setSimilarGames(response)
       setLoading(false)
     })
-  }, [gameInfo])
+  }, [])
 
   return (
     <section className='w-[45%]'>

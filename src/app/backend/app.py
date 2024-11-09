@@ -3,10 +3,10 @@ from services.steam import SteamAPI
 
 app = Flask(__name__)
 
-#Cors
+# Cors
 from flask_cors import CORS
-CORS(app)
 
+CORS(app)
 
 # Initialize services
 steam_api = SteamAPI()
@@ -43,11 +43,17 @@ def get_games_by_genre():
     genre = genre.replace(" ", "+")  # type: ignore
     return jsonify(steam_api.get_games_by_genre(genre, int(n)))
 
+
 # Add a new Route for make the Predictions
 @api.route("/game/predict", methods=["POST"])
 def get_games_predict():
     data = request.json
-    return jsonify(steam_api.get_games_predict(data))
+    # Log the received data for debugging
+    print("Received data:")
+    response = steam_api.get_games_predict(data)
+    # Log the prediction result
+    print("Prediction result")
+    return jsonify(response)
 
 
 # Register the Blueprint

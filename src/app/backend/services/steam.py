@@ -68,9 +68,7 @@ class SteamAPI:
         return games
 
     def get_games_predict(self, data):
-        # Fetch
-        response = self.model.predict(data)
-        # Parse
-        games = response.json()
-        # Return
+        print("prediciendo...")
+        games = self.model.predict(data)
+        print("prediccion:", games)
         return games

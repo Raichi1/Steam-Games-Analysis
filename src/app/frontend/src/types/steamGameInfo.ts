@@ -24,6 +24,10 @@ export interface GameInfo {
   platforms?: Platforms
   metacritic?: Metacritic
   categories?: Category[]
+  achievements: {
+    total: number
+    highlighted: any
+  }
   genres?: Genre[]
   screenshots?: Screenshot[]
   movies?: Movie[]

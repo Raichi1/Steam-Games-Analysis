@@ -5,15 +5,24 @@ import { Card } from './Card'
 import { Loading } from './Loading'
 
 const genresBase = [
-  'Action',
-  'Adventure',
-  'Casual',
-  'Massively',
-  'Multiplayer',
+  'Utilities',
   'RPG',
+  'Early Access',
+  'Indie',
+  'Massively Multiplayer',
+  'Multiplayer',
+  'Casual',
+  'Web Publishing',
+  'Free to Play',
+  'Strategy',
+  'Violent',
+  'Racing',
+  'Sports',
+  'Adventure',
   'Simulation'
 ]
-const SIZE = 100
+
+const SIZE = 250
 
 export const AppGames = () => {
   const [games, setGames] = useState<GameSpy[]>([])
@@ -47,9 +56,9 @@ export const AppGames = () => {
   }, [genreSelected])
   return (
     <section className='flex flex-col gap-5'>
-      <header className='flex w-full justify-between'>
+      <header className='flex w-full justify-between items-center h-[150px]'>
         <h2>Steam Users Predictor</h2>
-        <section className='flex wrap gap-2 justify-end items-center'>
+        <section className='flex flex-wrap w-[800px] gap-2 h-fit justify-center'>
           {genresBase.map(genre => {
             return (
               <button
