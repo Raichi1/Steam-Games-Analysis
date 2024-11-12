@@ -1,9 +1,9 @@
-import type { RequestModel, ResponseModel } from '../types/model'
+import type { ResponseModel } from '../types/model'
 import type { GameInfo } from '../types/steamGameInfo'
-import type { GameInfoSpy, GameSpy } from '../types/steamGameSpy'
+import type { GameSpy } from '../types/steamGameSpy'
 
 const URL_API = 'http://192.168.18.4:5000/api'
-const URL_SPY = 'https://steamspy.com/api.php?request=appdetails&appid='
+// const URL_SPY = 'https://steamspy.com/api.php?request=appdetails&appid='
 
 export const getTopGames = async (n: number = 10): Promise<GameSpy[]> => {
   return await fetch(`${URL_API}/game/top?n=${n}`)

@@ -4,22 +4,29 @@ import { getGameInfo } from '../services/steam'
 import { Loading } from './Loading'
 import { SimilarGames } from './SimilarGames'
 import { Prediction } from './Prediction'
+import type { GameSpy } from '../types/steamGameSpy'
+import { getStylesScore } from '../const/steam'
 
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
-  gameid?: number
+  game: GameSpy
+  score: number
 }
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, gameid }) => {
+export const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  game,
+  score
+}) => {
   const [gameInfo, setGameInfo] = useState<GameInfo>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if (isOpen) {
       setIsLoading(true)
-      // first fetch
-      getGameInfo(gameid!).then(response => {
+      getGameInfo(game.appid!).then(response => {
         setGameInfo(response)
         setIsLoading(false)
       })
@@ -30,7 +37,12 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, gameid }) => {
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[200]'>
-      <div className='relative bg-dark p-6 rounded-lg shadow-lg w-[1250px] h-[750px] mx-auto overflow-y-auto no-scrollbar'>
+      <div className='relative bg-dark p-6 rounded-lg shadow-lg w-[1250px] h-[750px] mx-auto'>
+        <img
+          src={gameInfo?.background}
+          alt={gameInfo?.name}
+          className='absolute top-0 left-0 h-full p-0 m-0'
+        />
         <button
           onClick={onClose}
           className='absolute top-2 right-2 text-gray-500 hover:text-gray-700'
@@ -40,16 +52,26 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, gameid }) => {
         {isLoading ? (
           <Loading />
         ) : (
-          <main className='flex gap-5'>
-            <section className='w-[55%]'>
-              <h1 className='text-2xl font-bold text-center'>
+          <main className='flex gap-5 relative'>
+            <section className='w-[55%] flex flex-col gap-2'>
+              <p className='text-2xl font-bold text-center flex justify-between'>
                 {gameInfo?.name}
-              </h1>
-              <img
-                src={gameInfo?.header_image}
-                alt={gameInfo?.name}
-                className='w-full h-[300px] object-cover rounded-md'
-              />
+                <span
+                  className={`w-fit h-fit px-1 text-dark
+              rounded-md text-body-14
+              ${getStylesScore(score)}`}
+                >
+                  {score.toPrecision(2)}
+                </span>
+              </p>
+              <div className='overflow-hidden w-full h-[300px]  rounded-md'>
+                <img
+                  src={gameInfo?.header_image}
+                  alt={gameInfo?.name}
+                  className='w-full h-full object-cover transition-all duration-1000 ease-in-out hover:scale-100 scale-110
+                    filter grayscale-[40%] hover:grayscale-[25%]'
+                />
+              </div>
               <p className='text-gray-500 text-body-16 mt-2'>
                 {gameInfo?.short_description}
               </p>
@@ -58,15 +80,11 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, gameid }) => {
               <div className='flex items-center justify-start gap-3 mt-2'>
                 <span className='text-gray-500 text-body-14'>Price:</span>
                 <span className='text-primary text-body-14'>
-                  {gameInfo?.package_groups?.[0]?.subs?.[0]
-                    ?.price_in_cents_with_discount
+                  {game.price !== '0'
                     ? new Intl.NumberFormat('en-US', {
                         style: 'currency',
                         currency: 'USD'
-                      }).format(
-                        gameInfo.package_groups[0].subs[0]
-                          .price_in_cents_with_discount / 100
-                      )
+                      }).format(Number(game.price) / 100.0)
                     : 'Free to Play'}
                 </span>
               </div>

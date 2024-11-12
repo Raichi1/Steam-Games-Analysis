@@ -12,7 +12,6 @@ interface ModalProps {
 export const SimilarGames: React.FC<ModalProps> = ({ gameInfo }) => {
   const [similarGames, setSimilarGames] = useState<GameSpy[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-
   useEffect(() => {
     setLoading(true)
     // get random genre
@@ -26,9 +25,9 @@ export const SimilarGames: React.FC<ModalProps> = ({ gameInfo }) => {
   }, [])
 
   return (
-    <section className='w-[45%]'>
+    <section className='w-[45%] '>
       <h2 className='text-xl font-bold text-center'>More like this</h2>
-      <div className='flex gap-2 mt-2 flex-wrap items-center justify-center'>
+      <div className='flex gap-2 mt-2 flex-wrap items-center justify-center overflow-y-auto h-[650px] no-scrollbar'>
         {loading ? (
           <Loading />
         ) : (
