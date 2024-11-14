@@ -1,2 +1,4 @@
 src/data
+src/models/catboost_info
+src/models/models/*.joblib
 __pycache__
