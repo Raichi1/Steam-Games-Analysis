@@ -1,3 +1,5 @@
+import json
+import pandas as pd
 from joblib import load
 from dataclasses import dataclass
 
@@ -15,16 +17,21 @@ class ResponseModel:
 class Model:
     def __init__(self) -> None:
         # Cargar Modelo
-        self.MODEL = load("../../models/pca_model.joblib")
+        self.MODEL = load("../../models/models/pca_model.joblib")
         # Cargar PCA
-        self.PCA = load("../../models/pca_model.joblib")
+        self.PCA = load("../../models/models/pca_model.joblib")
         # Cargar el MinMaxScaler
-        self.S_MIN_MAX = load("../../models/minmax_scaler.joblib")
+        self.S_MIN_MAX = load("../../models/scalers/minmax_scaler.joblib")
         # Cargar el RobustScaler
-        self.S_ROBUST = load("../../models/robust_scaler.joblib")
+        self.S_ROBUST = load("../../models/scalers/robust_scaler.joblib")
 
     def predict(self, data):
         # Escalar los datos
+        print(json.dumps(data, indent = 4))
+        # print(data["metacritic"]["score"])
+        # print(data["achievements"]["total"])
+        print([x['description'] for x in data['genres']])
+
         # data = self.S_MIN_MAX.transform(data)
         # data = self.S_ROBUST.transform(data)
         # # Get components
