@@ -18,7 +18,9 @@ export const SimilarGames: React.FC<ModalProps> = ({ gameInfo }) => {
     const genre =
       gameInfo?.genres?.[Math.floor(Math.random() * gameInfo.genres.length)]
         .description
+    // console.log(genre)
     getGameByGenre(genre!).then(response => {
+      console.log(response)
       setSimilarGames(response)
       setLoading(false)
     })

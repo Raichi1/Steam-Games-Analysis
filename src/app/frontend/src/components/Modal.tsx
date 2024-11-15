@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { type GameInfo } from '../types/steamGameInfo'
-import { getGameInfo } from '../services/steam'
+import { getGameInfo, getGameSpy } from '../services/steam'
 import { Loading } from './Loading'
 import { SimilarGames } from './SimilarGames'
 import { Prediction } from './Prediction'
@@ -21,13 +21,19 @@ export const Modal: React.FC<ModalProps> = ({
   score
 }) => {
   const [gameInfo, setGameInfo] = useState<GameInfo>()
+  const [gameSpy, setGameSpy] = useState<GameSpy>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if (isOpen) {
       setIsLoading(true)
       getGameInfo(game.appid!).then(response => {
+        // console.log(response)
         setGameInfo(response)
+      })
+      getGameSpy(game.appid!).then(response => {
+        // console.log(response)
+        setGameSpy(response)
         setIsLoading(false)
       })
     }
@@ -100,7 +106,7 @@ export const Modal: React.FC<ModalProps> = ({
                 ))}
               </div>
               {/* Prediction */}
-              <Prediction gameinfo={gameInfo} />
+              <Prediction gameinfo={gameInfo} gamespy={gameSpy} />
             </section>
             <SimilarGames gameInfo={gameInfo!} />
           </main>
