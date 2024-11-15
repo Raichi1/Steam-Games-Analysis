@@ -13,7 +13,7 @@ class SteamAPI:
         self.URL_GAME_DETAILS = "https://store.steampowered.com/api/appdetails?appids="
         self.URL_GAME_BY_GENRE = "https://steamspy.com/api.php?request=genre&genre="
         self.URL_GAMES_TOP = "https://steamspy.com/api.php?request=top100in2weeks"
-        # ? self.URL_GAMES_INFO = "https://steamspy.com/api.php?request=appdetails&appid=730"
+        self.URL_GAMES_INFO = "https://steamspy.com/api.php?request=appdetails&appid="
 
         # Load Model
         self.model = Model()
@@ -44,6 +44,25 @@ class SteamAPI:
         game = response.json()[id]["data"]
         # add to cache
         self.cache.add_game(game_id, game)
+        # Return
+        return game
+
+    def get_game_spy(self, game_id):
+        # Verify cache
+        game_spy = self.cache.get_game_spy(game_id)
+        if game_spy:
+            print("Getting from Cache:", game_id)
+            return game_spy
+        # Fetch
+        response = requests.get(
+            self.URL_GAMES_INFO + str(game_id)
+        )
+        if response.status_code != 200:
+            return {}
+        # Parse
+        game = response.json()
+        # add to cache
+        self.cache.add_game_spy(game_id, game)
         # Return
         return game
 

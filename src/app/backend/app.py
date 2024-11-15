@@ -33,6 +33,9 @@ def get_games_top():
 def get_game_by_id(game_id):
     return jsonify(steam_api.get_game_details(game_id))
 
+@api.route("/spy/<int:game_id>", methods=["GET"])
+def get_game_spy_by_id(game_id):
+    return jsonify(steam_api.get_game_spy(game_id))
 
 # Add a new route to get by genre
 @api.route("/game/genre", methods=["GET"])
@@ -41,6 +44,7 @@ def get_games_by_genre():
     n = request.args.get("n", 10)
     # from "early access" to "early+access"
     genre = genre.replace(" ", "+")  # type: ignore
+    print(jsonify(steam_api.get_games_by_genre(genre, int(n))))
     return jsonify(steam_api.get_games_by_genre(genre, int(n)))
 
 

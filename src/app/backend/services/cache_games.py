@@ -7,6 +7,7 @@ class CacheGames:
     def __init__(self):
         print("CacheGames initialized")
         self.cache = self._read_cache()
+        self.cache_spy = self._read_cache_spy()
         self.thread_started = False
         self._init_thread()
 
@@ -14,8 +15,23 @@ class CacheGames:
         print("Adding to Cache:", game_id)
         self.cache[game_id] = movie
 
+    def add_game_spy(self, game_id, movie):
+        print("Adding to Cache:", game_id)
+        self.cache_spy[game_id] = movie
+
+
     def get_game(self, game_id):
         return self.cache.get(game_id)
+    
+    def get_game_spy(self, game_id):
+        return self.cache_spy.get(game_id)
+    
+    def _read_cache_spy(self):
+        try:
+            with open("./services/cache_spy.json", "r") as file:
+                return json.load(file)
+        except FileNotFoundError:
+            return {}
 
     def _read_cache(self):
         try:
@@ -23,6 +39,10 @@ class CacheGames:
                 return json.load(file)
         except FileNotFoundError:
             return {}
+
+    def _save_cache_spy(self):
+        with open("./services/cache_spy.json", "w") as file:
+            json.dump(self.cache_spy, file)
 
     def _save_cache(self):
         with open("./services/cache.json", "w") as file:
@@ -34,6 +54,7 @@ class CacheGames:
             print("Guardando..")
             time.sleep(interval)
             self._save_cache()
+            self._save_cache_spy()
 
     def _init_thread(self):
         if not self.thread_started:

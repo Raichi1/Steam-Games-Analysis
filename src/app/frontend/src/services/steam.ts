@@ -17,6 +17,12 @@ export const getGameInfo = async (id: number): Promise<GameInfo> => {
     .catch(err => console.error(err))
 }
 
+export const getGameSpy = async (id: number): Promise<GameSpy> => {
+  return await fetch(`${URL_API}/spy/${id}`)
+    .then(res => res.json())
+    .catch(err => console.error(err))
+}
+
 export const getGameByGenre = async (
   genre: string,
   n: number = 10
@@ -28,14 +34,21 @@ export const getGameByGenre = async (
 }
 
 export const getPredictions = async (
-  gameInfo: GameInfo
+  gameInfo  : GameInfo,
+  gameSpy   : GameSpy
 ): Promise<ResponseModel> => {
+
+  const combinedData = {
+    ...gameInfo,
+    ...gameSpy
+  }
+
   const response = await fetch(`${URL_API}/game/predict`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(gameInfo)
+    body: JSON.stringify(combinedData)
   })
   if (!response.ok) {
     const errorText = await response.text()

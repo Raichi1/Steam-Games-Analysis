@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react'
 import type { GameInfo } from '../types/steamGameInfo'
+import type { GameSpy } from '../types/steamGameSpy'
 import { getPredictions } from '../services/steam'
 import type { ResponseModel } from '../types/model'
 
 interface ModalProps {
   gameinfo?: GameInfo
+  gamespy?: GameSpy
 }
 
-export const Prediction: React.FC<ModalProps> = ({ gameinfo }) => {
+export const Prediction: React.FC<ModalProps> = ({ gameinfo , gamespy}) => {
   const [predictions, setPredictions] = useState<ResponseModel>()
   useEffect(() => {
-    if (!gameinfo) return
-    getPredictions(gameinfo!).then(data => {
+    if (!gameinfo || !gamespy) return
+    getPredictions(gameinfo!, gamespy!).then(data => {
       setPredictions(data)
     })
-  }, [gameinfo])
+  }, [gameinfo, gamespy])
   return (
     <div>
       <p>{predictions?.data}</p>

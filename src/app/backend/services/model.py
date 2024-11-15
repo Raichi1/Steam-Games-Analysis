@@ -1,14 +1,16 @@
 import json
+import numpy as np
 import pandas as pd
 from joblib import load
 from dataclasses import dataclass
+from services.dataframe import Dataframe_
 
 
 @dataclass
 class ResponseModel:
     success: bool
     message: str
-    data: float
+    data: float 
 
     def to_dict(self):
         return {"success": self.success, "message": self.message, "data": self.data}
@@ -27,10 +29,8 @@ class Model:
 
     def predict(self, data):
         # Escalar los datos
-        print(json.dumps(data, indent = 4))
-        # print(data["metacritic"]["score"])
-        # print(data["achievements"]["total"])
-        print([x['description'] for x in data['genres']])
+        self.df = Dataframe_(data)
+        data_frame = self.df.build_dataframe()
 
         # data = self.S_MIN_MAX.transform(data)
         # data = self.S_ROBUST.transform(data)
@@ -41,6 +41,6 @@ class Model:
 
         # ResponseModel
         prediction = ResponseModel(
-            success=True, message="Prediction", data=0.0
+            success=True, message="Prediction", data = 0.0
         ).to_dict()
         return prediction
