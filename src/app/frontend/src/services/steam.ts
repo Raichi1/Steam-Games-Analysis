@@ -43,25 +43,24 @@ export const getPredictions = async (
     'Peak CCU': gameSpy.ccu,
     Price: Number(gameSpy.price) / 100,
     'Supported languages': gameSpy.languages,
-    'DLC count': gameInfo?.dlc || 0,
+    'DLC count': gameInfo?.dlc?.length || 0,
     Windows: gameInfo.platforms.windows,
     Mac: gameInfo.platforms.mac,
     Linux: gameInfo.platforms.linux,
     'Metacritic score': gameInfo.metacritic?.score || 0,
     'User score': gameSpy.userscore,
-    Achievements: gameInfo.achievements.total,
+    Achievements: gameInfo.achievements?.total || 0,
     Positive: gameSpy.positive,
     Negative: gameSpy.negative,
-    Recommendations: gameInfo.recommendations.total,
+    Recommendations: gameInfo.recommendations?.total || 0,
     'Average playtime forever': gameSpy.average_forever,
     'Average playtime two weeks': gameSpy.average_2weeks,
     'Median playtime forever': gameSpy.median_forever,
     'Median playtime two weeks': gameSpy.median_2weeks,
     Genres: gameSpy.genre,
-    // genres: gameInfo.genres.map(genre => genre.description),
   }
 
-  console.log(combinedData)
+  // console.log(`Data : ${combinedData}`)
 
   const response = await fetch(`${URL_API}/game/predict`, {
     method: 'POST',
