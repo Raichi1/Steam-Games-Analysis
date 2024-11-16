@@ -4,22 +4,43 @@ import pandas as pd
 from sklearn.utils.validation import check_array
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import make_pipeline, make_union
-from sklearn.preprocessing import RobustScaler, MinMaxScaler
+from sklearn.compose import make_column_transformer
 
 
 __all__ = ['PipelineTransform']
 
 # Constants
 categories = [
-        'Free to Play',          'Strategy',              'Software Training',   'RPG', 'Utilities',
-        'Animation & Modeling',  '360 Video',             'Sports', 'Adventure', 'Racing',
-        'Early Access',          'Indie',                 'Web Publishing',      'Audio Production', 
-        'Documentary',           'Design & Illustration', 'Video Production',    'Episodic',
-        'Game Development',      'Education',             'Accounting',          'Sexual Content', 
-        'Tutorial',              'Gore',                  'Violent',             'Short',    
-        'Massively Multiplayer', 'Casual',                'Nudity',              'Photo Editing',
-        'Movie',                 'Simulation',            'Action'
-    ]
+    'Free to Play',          'Strategy',              'Software Training',   'RPG', 'Utilities',
+    'Animation & Modeling',  '360 Video',             'Sports', 'Adventure', 'Racing',
+    'Early Access',          'Indie',                 'Web Publishing',      'Audio Production', 
+    'Documentary',           'Design & Illustration', 'Video Production',    'Episodic',
+    'Game Development',      'Education',             'Accounting',          'Sexual Content', 
+    'Tutorial',              'Gore',                  'Violent',             'Short',    
+    'Massively Multiplayer', 'Casual',                'Nudity',              'Photo Editing',
+    'Movie',                 'Simulation',            'Action'
+]
+
+robust_columns = [
+    'Peak CCU',                  'DLC count',                  'Metacritic score',        'User score',                
+    'Positive',                  'Negative',                   'Achievements',            'Recommendations',
+    'Average playtime forever',  'Average playtime two weeks', 'Median playtime forever', 'Median playtime two weeks', 
+    'Achievements_per_hour',     'Genre_count',                'Recent_playtime_ratio',   'Languages_count',
+    'Antiquity',                 'Recommendation_per_genre'
+]
+
+minmax_columns = [ 'Price', 'OS_ratio', 'Platform_count']
+
+final_columns = [
+    'Peak CCU', 'DLC count', 'Metacritic score', 'Positive', 'Negative',
+    'Achievements', 'Recommendations', 'Average playtime forever',
+    'Average playtime two weeks', 'Median playtime forever',
+    'Median playtime two weeks', 'Achievements_per_hour', 'Genre_count',
+    'Recent_playtime_ratio', 'Languages_count', 'Antiquity',
+    'Recommendation_per_genre', 'Price', 'OS_ratio', 'Platform_count',
+    'Windows', 'Mac', 'Linux', 'Casual', 'Adventure', 'RPG', 'Free to Play',
+    'Indie', 'Violent'
+]
 
 # Functions
 def count_languages(word : str):
@@ -113,7 +134,6 @@ class _RecommendationPerGenre(BaseEstimator, TransformerMixin):
         X['Recommendation_per_genre'] = X['Recommendations'] / X['Genre_count']
         return X
 
-
 # Pipeline
 class PipelineTransform():
     def __init__(self):
@@ -130,3 +150,15 @@ class PipelineTransform():
     
     def fit_transform(self, X):
         return self.pipeline.fit_transform(X)
+    
+
+class ScalerData():
+    def __init__(self):
+        self
+
+    def transform(self, X, robusScaler, minmaxScaler):
+        X = X.copy()
+        X[minmax_columns] = minmaxScaler.transform(X[minmax_columns])
+        X[robust_columns] = robusScaler.transform(X[robust_columns])
+        return X[final_columns]
+
