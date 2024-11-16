@@ -3,13 +3,15 @@ import type { Genre } from './steamGameInfo'
 export interface ResponseModel {
   success: boolean
   message: string
-  data: any
+  data: string
 }
 
 export interface RequestModel {
+  'Realease date' : string
   'Peak CCU': number
   Price: number
   'DLC count': number
+  'Supported languages': string
   Windows: boolean
   Mac: boolean
   Linux: boolean
@@ -23,5 +25,5 @@ export interface RequestModel {
   'Average playtime two weeks': number
   'Median playtime forever': number
   'Median playtime two weeks': number
-  genres?: Genre[]
+  Genres?: string
 }

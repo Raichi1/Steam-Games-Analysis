@@ -1,4 +1,4 @@
-import type { ResponseModel } from '../types/model'
+import type { RequestModel, ResponseModel } from '../types/model'
 import type { GameInfo } from '../types/steamGameInfo'
 import type { GameSpy } from '../types/steamGameSpy'
 
@@ -38,10 +38,30 @@ export const getPredictions = async (
   gameSpy   : GameSpy
 ): Promise<ResponseModel> => {
 
-  const combinedData = {
-    ...gameInfo,
-    ...gameSpy
+  const combinedData : RequestModel = {
+    'Release date': gameInfo.release_date?.date,
+    'Peak CCU': gameSpy.ccu,
+    Price: Number(gameSpy.price) / 100,
+    'Supported languages': gameSpy.languages,
+    'DLC count': gameInfo?.dlc || 0,
+    Windows: gameInfo.platforms.windows,
+    Mac: gameInfo.platforms.mac,
+    Linux: gameInfo.platforms.linux,
+    'Metacritic score': gameInfo.metacritic?.score || 0,
+    'User score': gameSpy.userscore,
+    Achievements: gameInfo.achievements.total,
+    Positive: gameSpy.positive,
+    Negative: gameSpy.negative,
+    Recommendations: gameInfo.recommendations.total,
+    'Average playtime forever': gameSpy.average_forever,
+    'Average playtime two weeks': gameSpy.average_2weeks,
+    'Median playtime forever': gameSpy.median_forever,
+    'Median playtime two weeks': gameSpy.median_2weeks,
+    Genres: gameSpy.genre,
+    // genres: gameInfo.genres.map(genre => genre.description),
   }
+
+  console.log(combinedData)
 
   const response = await fetch(`${URL_API}/game/predict`, {
     method: 'POST',

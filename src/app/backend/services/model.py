@@ -1,16 +1,20 @@
+import re
 import json
 import numpy as np
 import pandas as pd
 from joblib import load
+from sklearn.ensemble import HistGradientBoostingClassifier
+from skopt import BayesSearchCV
 from dataclasses import dataclass
-from services.dataframe import Dataframe_
+from services.transform import TransformData
+
 
 
 @dataclass
 class ResponseModel:
     success: bool
     message: str
-    data: float 
+    data: str 
 
     def to_dict(self):
         return {"success": self.success, "message": self.message, "data": self.data}
@@ -19,7 +23,9 @@ class ResponseModel:
 class Model:
     def __init__(self) -> None:
         # Cargar Modelo
-        self.MODEL = load("../../models/models/pca_model.joblib")
+        self.MODEL = load("../../models/models/bayes_search_hist_gradient_boosting.joblib")
+        # Label Encoder
+        self.LABEL_ENCODER = load("../../models/models/label_encoder.joblib")
         # Cargar PCA
         self.PCA = load("../../models/models/pca_model.joblib")
         # Cargar el MinMaxScaler
@@ -28,19 +34,20 @@ class Model:
         self.S_ROBUST = load("../../models/scalers/robust_scaler.joblib")
 
     def predict(self, data):
-        # Escalar los datos
-        self.df = Dataframe_(data)
-        data_frame = self.df.build_dataframe()
+        # Build DataFrame
+        transform_data = TransformData(data)
 
-        # data = self.S_MIN_MAX.transform(data)
-        # data = self.S_ROBUST.transform(data)
-        # # Get components
-        # components = self.PCA.transform(data)
+        # scaled_dataframe =
+        transform_data.scale_data(self.S_ROBUST, self.S_MIN_MAX)
+
+        # Get components
+        transform_data.pca_transform(self.PCA)
+
         # # Predict
-        # prediction = self.MODEL.predict(components)  # type: ignore
+        prediction = self.LABEL_ENCODER.inverse_transform(self.MODEL.predict(transform_data.dataframe))[0]  # type: ignore
 
         # ResponseModel
         prediction = ResponseModel(
-            success=True, message="Prediction", data = 0.0
+            success=True, message="Prediction", data = prediction
         ).to_dict()
         return prediction
