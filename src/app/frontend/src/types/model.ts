@@ -1,5 +1,3 @@
-import type { Genre } from './steamGameInfo'
-
 export interface ResponseModel {
   success: boolean
   message: string
@@ -7,7 +5,7 @@ export interface ResponseModel {
 }
 
 export interface RequestModel {
-  'Realease date' : string
+  'Realease date': string
   'Peak CCU': number
   Price: number
   'DLC count': number

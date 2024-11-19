@@ -81,7 +81,7 @@ export const AppGames = () => {
         {loading ? (
           <Loading />
         ) : (
-          games.map(game => <Card key={game.appid} game={game} />)
+          games && games.map(game => <Card key={game.appid} game={game} />)
         )}
       </main>
     </section>
