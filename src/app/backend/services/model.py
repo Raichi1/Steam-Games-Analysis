@@ -40,6 +40,7 @@ class Model:
         # scaled_dataframe =
         transform_data.scale_data(self.S_ROBUST, self.S_MIN_MAX)
 
+        print(transform_data.dataframe.info())
         # Get components
         transform_data.pca_transform(self.PCA)
 

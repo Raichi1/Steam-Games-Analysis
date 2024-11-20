@@ -32,14 +32,12 @@ robust_columns = [
 minmax_columns = [ 'Price', 'OS_ratio', 'Platform_count']
 
 final_columns = [
-    'Peak CCU', 'DLC count', 'Metacritic score', 'Positive', 'Negative',
-    'Achievements', 'Recommendations', 'Average playtime forever',
-    'Average playtime two weeks', 'Median playtime forever',
-    'Median playtime two weeks', 'Achievements_per_hour', 'Genre_count',
-    'Recent_playtime_ratio', 'Languages_count', 'Antiquity',
-    'Recommendation_per_genre', 'Price', 'OS_ratio', 'Platform_count',
-    'Windows', 'Mac', 'Linux', 'Casual', 'Adventure', 'RPG', 'Free to Play',
-    'Indie', 'Violent'
+    'Peak CCU',     'DLC count',        'Metacritic score',         'Positive',                   'Negative',
+    'Achievements', 'Recommendations',  'Average playtime forever', 'Average playtime two weeks', 'Median playtime forever',
+    'Median playtime two weeks',        'Achievements_per_hour',    'Genre_count',                'Recent_playtime_ratio', 
+    'Languages_count', 'Antiquity',     'Recommendation_per_genre', 'Price',                      'OS_ratio', 
+    'Platform_count',  'Mac',           '+15',                      'Casual',                     'Free to Play', 
+    'Indie',           'Action',        'Adventure'
 ]
 
 # Functions

@@ -26,4 +26,5 @@ export interface RequestModel {
   'Median playtime forever': number
   'Median playtime two weeks': number
   Genres?: string
+  '+15': boolean
 }
