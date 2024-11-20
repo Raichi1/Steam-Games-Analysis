@@ -94,12 +94,12 @@ export const Modal: React.FC<ModalProps> = ({
                     : 'Free to Play'}
                 </span>
               </div>
-              <div className='flex gap-3 mt-2'>
+              <div className='flex gap-3 mt-2 overflow-hidden flex-wrap'>
                 {gameInfo?.genres?.map(genre => (
                   <span
                     key={genre.id}
                     className='text-dark text-body-14 bg-primary px-2 hover:bg-secondary hover:text-primary select-none rounded-md
-                    transition-colors duration-300 ease-in-out'
+                    transition-colors duration-300 ease-in-out h-[20px] w-fit'
                   >
                     {genre.description}
                   </span>
