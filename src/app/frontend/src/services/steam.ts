@@ -37,7 +37,6 @@ export const getPredictions = async (
   gameInfo  : GameInfo,
   gameSpy   : GameSpy
 ): Promise<ResponseModel> => {
-
   const combinedData : RequestModel = {
     'Release date': gameInfo.release_date?.date,
     'Peak CCU': gameSpy.ccu,
@@ -58,6 +57,7 @@ export const getPredictions = async (
     'Median playtime forever': gameSpy.median_forever,
     'Median playtime two weeks': gameSpy.median_2weeks,
     Genres: gameSpy.genre,
+    '+15': Number(gameInfo?.required_age) > 15
   }
 
   // console.log(`Data : ${combinedData}`)
