@@ -2,7 +2,7 @@ import type { RequestModel, ResponseModel } from '../types/model'
 import type { GameInfo } from '../types/steamGameInfo'
 import type { GameSpy } from '../types/steamGameSpy'
 
-const URL_API = 'http://127.0.0.1:5000/api'
+const URL_API = 'http://localhost:5000/api'
 // const URL_SPY = 'https://steamspy.com/api.php?request=appdetails&appid='
 
 export const getTopGames = async (n: number = 10): Promise<GameSpy[]> => {
@@ -34,10 +34,10 @@ export const getGameByGenre = async (
 }
 
 export const getPredictions = async (
-  gameInfo  : GameInfo,
-  gameSpy   : GameSpy
+  gameInfo: GameInfo,
+  gameSpy: GameSpy
 ): Promise<ResponseModel> => {
-  const combinedData : RequestModel = {
+  const combinedData: RequestModel = {
     'Release date': gameInfo.release_date?.date,
     'Peak CCU': gameSpy.ccu,
     Price: Number(gameSpy.price) / 100,
@@ -59,7 +59,7 @@ export const getPredictions = async (
     Genres: gameSpy.genre,
     '+15': Number(gameInfo?.required_age) > 15
   }
-
+  console.log(combinedData)
   // console.log(`Data : ${combinedData}`)
 
   const response = await fetch(`${URL_API}/game/predict`, {
@@ -68,6 +68,24 @@ export const getPredictions = async (
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(combinedData)
+  })
+  if (!response.ok) {
+    const errorText = await response.text()
+    console.error('Error response:', errorText)
+    throw new Error('Network response was not ok')
+  }
+  return response.json()
+}
+
+export const postPrediction = async (
+  request: RequestModel
+): Promise<ResponseModel> => {
+  const response = await fetch(`${URL_API}/game/predict`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
   })
   if (!response.ok) {
     const errorText = await response.text()

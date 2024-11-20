@@ -5,7 +5,7 @@ export interface ResponseModel {
 }
 
 export interface RequestModel {
-  'Realease date': string
+  'Release date': string
   'Peak CCU': number
   Price: number
   'DLC count': number
