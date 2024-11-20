@@ -9,8 +9,8 @@ interface ModalProps {
   gamespy?: GameSpy
 }
 
-export const Prediction: React.FC<ModalProps> = ({ gameinfo , gamespy}) => {
-  const [predictions, setPredictions] = useState<ResponseModel>()
+export const Prediction: React.FC<ModalProps> = ({ gameinfo, gamespy }) => {
+  const [predictions, setPredictions] = useState<ResponseModel | null>(null)
   useEffect(() => {
     if (!gameinfo || !gamespy) return
     getPredictions(gameinfo!, gamespy!).then(data => {
@@ -19,9 +19,12 @@ export const Prediction: React.FC<ModalProps> = ({ gameinfo , gamespy}) => {
   }, [gameinfo, gamespy])
   return (
     <div>
-      <p>{predictions?.data}</p>
-      <p>{predictions?.success ? 'Success' : 'Failed'}</p>
-      <p>{predictions?.message}</p>
+      {predictions && (
+        <p className='text-primary'>
+          Owners Estimated
+          <p className='text-light'>{predictions.data}</p>
+        </p>
+      )}
     </div>
   )
 }
